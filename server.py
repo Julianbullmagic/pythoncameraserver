@@ -1,24 +1,23 @@
-from flask import Flask, render_template
-from flask_socketio import SocketIO, emit
+import asyncio
+import websockets
+import base64
 
-app = Flask(__name__)
-socketio = SocketIO(app, async_mode='gevent')
+async def image_handler(websocket, path):
+    while True:
+        image_base64 = await websocket.recv()
 
-# Serve the static HTML website
-@app.route('/')
-def index():
-    return render_template('index.html')
+        try:
+            image_data = base64.b64decode(image_base64)
+            # Process or save the image_data as needed
+            # For example: save the image to disk
+            with open(f"received_image.jpg", "wb") as f:
+                f.write(image_data)
 
-@socketio.on('connect')
-def handle_connect():
-    print('New user connected')
-    # Your other handling code
+            print("Received and saved an image.")
+        except Exception as e:
+            print(f"Error processing image: {e}")
 
-# WebSocket event handler for image reception
-@socketio.on('image')
-def handle_image(data):
-    print(data,"image incoming")
-    # emit('image', data, broadcast=True)
-
-if __name__ == '__main__':
-    socketio.run(app)
+if __name__ == "__main__":
+    start_server = websockets.serve(image_handler, '0.0.0.0', 8765)  # Adjust the IP and port
+    asyncio.get_event_loop().run_until_complete(start_server)
+    asyncio.get_event_loop().run_forever()
