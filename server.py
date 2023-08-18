@@ -17,8 +17,8 @@ def handle_connect():
 # WebSocket event handler for image reception
 @socketio.on('image')
 def handle_image(data):
-    print("image incoming")
-    emit('image', data, broadcast=True)
+    print(data,"image incoming")
+    # emit('image', data, broadcast=True)
 
 if __name__ == '__main__':
     socketio.run(app)
