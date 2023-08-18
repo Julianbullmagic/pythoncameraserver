@@ -1,6 +1,13 @@
 import asyncio
 import websockets
 import base64
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+    return "WebSocket server is running."
 
 async def image_handler(websocket, path):
     while True:
@@ -20,4 +27,4 @@ async def image_handler(websocket, path):
 if __name__ == "__main__":
     start_server = websockets.serve(image_handler, '0.0.0.0', 8765)  # Adjust the IP and port
     asyncio.get_event_loop().run_until_complete(start_server)
-    asyncio.get_event_loop().run_forever()
+    app.run(host='0.0.0.0', port=8000)
