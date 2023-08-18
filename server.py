@@ -12,7 +12,7 @@ def index():
 # WebSocket event handler for image reception
 @socketio.on('image')
 def handle_image(data):
-    # Broadcast the received image to all clients
+    print(data,"image incoming")
     emit('image', data, broadcast=True)
 
 if __name__ == '__main__':
