@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
-socketio = SocketIO(app, async_mode='geventwebsocket')
+socketio = SocketIO(app, async_mode='gevent')
 
 # Serve the static HTML website
 @app.route('/')
