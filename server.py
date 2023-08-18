@@ -9,11 +9,16 @@ socketio = SocketIO(app)
 def index():
     return render_template('index.html')
 
+@socketio.on('connect')
+def handle_connect():
+    print('New user connected')
+    # Your other handling code
+
 # WebSocket event handler for image reception
 @socketio.on('image')
 def handle_image(data):
     print(data,"image incoming")
-    emit('image', data, broadcast=True)
+    # emit('image', data, broadcast=True)
 
 if __name__ == '__main__':
     socketio.run(app)
